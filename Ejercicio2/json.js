@@ -1,5 +1,5 @@
 // JSON
-export const values = {
+const values = {
   1: {
     carrier: "CCH",
     service: "DEX",
@@ -26,7 +26,7 @@ export const values = {
   },
 };
 // JSON
-export const json = {
+const json = {
   data: {
     BUIN: [
       {

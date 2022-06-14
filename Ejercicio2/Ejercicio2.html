@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="./Ejercicio2.js"></script>
+    <script src="./json.js"></script>
+  </head>
+  <body>
+    <button onclick="maxLimitWithCarrierService(values, json, event)">
+      Servicios para cada localidad con mayor limite
+    </button>
+    <button onclick="maxServiceLocation(values, json, event)">
+      La localidad con mayor cantidad de servicios disponibles
+    </button>
+    <button onclick="mostServiceUsed(values, json, event)">
+      El servicio con mayor cobertura (Usado en más localidades)
+    </button>
+
+    <pre id="label"></pre>
+  </body>
+</html>
