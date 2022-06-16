@@ -4,6 +4,7 @@ import { LandingView } from "../Views/LandingView";
 const axios = require("axios").default;
 
 export function LandingController() {
+  //Creo estados que me ayudaran a realizar distintas tareas.
   const [characters, setCharacters] = useState([]);
   const [offset, setOffset] = useState(0);
   const [search, setSearch] = useState("");
@@ -14,15 +15,15 @@ export function LandingController() {
     thumbnail: "",
     modified: "",
   });
-
+  //Importo variables de entorno.
   const url = process.env.REACT_APP_URL;
   const ts = process.env.REACT_APP_TS;
   const hash = process.env.REACT_APP_HASH;
   const apikey = process.env.REACT_APP_PUBLIC_KEY;
-
+  //Me ayuda a detectar cuando llego al final de la pagina, modifico un estado para que llame a cargar mas personajes.
   function handleScroll(event) {
     if (
-      window.innerHeight + event.target.documentElement.scrollTop ===
+      window.innerHeight + event.target.documentElement.scrollTop + 1 >=
       event.target.documentElement.scrollHeight
     ) {
       console.log("please load more");
@@ -30,22 +31,21 @@ export function LandingController() {
       wait();
     }
   }
-
+  //Funcion que espera 1 segundo (la utilizo para que se haga una sola llamada a cargar personajes cuando llego al final de la pagina.)
   async function wait() {
     console.log("awaitando");
     await new Promise((r) => setTimeout(r, 1000));
   }
-
+  //OnMount() me carga mi array de personajes inicial y un evento que me indica en que parte de la pagina estoy.
   useEffect(() => {
     getCharacters(offset);
     window.addEventListener("scroll", handleScroll);
   }, [offset]);
-
+  //Funciones para buscar personajes.
   function onInputChange(e) {
     e.preventDefault();
     setSearch(e.target.value);
   }
-
   function onSubmit(e) {
     e.preventDefault();
     // if (search === "") {
@@ -54,7 +54,7 @@ export function LandingController() {
     getCharacters(offset, search);
     // }
   }
-
+  //Funcion principal en la que busco personajes de la API, y los modifico acorde con los datos que los necesito.
   function getCharacters(offset, name = "") {
     try {
       if (name) {
@@ -139,6 +139,7 @@ export function LandingController() {
 
   return (
     <div className="container">
+      {/* 'SearchBar' con algunos botones para mejorar su funcionamiento y experiencia del user. */}
       <div className="container-fluid row">
         <form
           onSubmit={onSubmit}
@@ -169,6 +170,7 @@ export function LandingController() {
           </button>
         </form>
       </div>
+      {/* Boton que habilita la creacion de un nuevo personaje. */}
       <div className="container mb-2">
         {!create ? (
           <button
@@ -221,6 +223,7 @@ export function LandingController() {
           </div>
         )}
       </div>
+      {/* Llamada al componente LandingView que es el encargado de renderizar los distintos personajes a partir del array proporcionado. */}
       <div className="container-fluid">
         {" "}
         {characters ? <LandingView characters={characters} /> : <></>}

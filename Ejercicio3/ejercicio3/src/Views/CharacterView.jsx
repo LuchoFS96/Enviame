@@ -1,11 +1,14 @@
 import { useState } from "react";
 
 export function CharacterView({ character }) {
+  //Constantes de estado que ayudan con el funcionamiento.
   const [edit, setEdit] = useState(false);
   const [newChar, setNewChar] = useState(character);
 
   return (
     <div className="col-lg-4 mt-3">
+      {/* Al clickear en Edit, se habilita un formulario que edita los datos del personaje.*/}
+      {/* Se renderiza una carta con los datos proporcionados del personaje. */}
       <button
         className="btn btn-secondary btn-sm"
         onClick={() => setEdit(true)}
