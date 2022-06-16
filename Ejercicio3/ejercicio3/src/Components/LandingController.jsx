@@ -15,6 +15,7 @@ export function LandingController() {
     thumbnail: "",
     modified: "",
   });
+  console.log(offset)
   //Importo variables de entorno.
   const url = process.env.REACT_APP_URL;
   const ts = process.env.REACT_APP_TS;
@@ -26,14 +27,13 @@ export function LandingController() {
       window.innerHeight + event.target.documentElement.scrollTop + 1 >=
       event.target.documentElement.scrollHeight
     ) {
-      console.log("please load more");
+      wait();
       setOffset(offset + 20);
       wait();
     }
   }
   //Funcion que espera 1 segundo (la utilizo para que se haga una sola llamada a cargar personajes cuando llego al final de la pagina.)
   async function wait() {
-    console.log("awaitando");
     await new Promise((r) => setTimeout(r, 1000));
   }
   //OnMount() me carga mi array de personajes inicial y un evento que me indica en que parte de la pagina estoy.
