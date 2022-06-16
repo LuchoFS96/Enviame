@@ -138,39 +138,45 @@ export function LandingController() {
   }
 
   return (
-    <div>
-      <div>
-        <nav>
-          <ul>
-            <li>
-              <div>
-                <form onSubmit={onSubmit}>
-                  <input
-                    type="text"
-                    onChange={onInputChange}
-                    value={search}
-                    placeholder="Search Hero"
-                  />
-                  <input type="submit" value="Buscar" />
-                  <button
-                    onClick={() => {
-                      setOffset(0);
-                      setCharacters([]);
-                      setSearch("");
-                      getCharacters();
-                    }}
-                  >
-                    Clear
-                  </button>
-                </form>
-              </div>
-            </li>
-          </ul>
-        </nav>
+    <div className="container">
+      <div className="container-fluid row">
+        <form
+          onSubmit={onSubmit}
+          className="container-fluid row justify-content-md-center m-2"
+        >
+          <input
+            type="text"
+            onChange={onInputChange}
+            value={search}
+            placeholder="Search Hero"
+            className="form-control  m-1 col-sm"
+          />
+          <input
+            type="submit"
+            value="Buscar"
+            className="btn btn-primary  btn-sm  m-1 col-sm"
+          />
+          <button
+            className="btn btn-secondary btn-sm  m-1 col-sm"
+            onClick={() => {
+              setOffset(0);
+              setCharacters([]);
+              setSearch("");
+              getCharacters();
+            }}
+          >
+            Clear
+          </button>
+        </form>
       </div>
-      <div>
+      <div className="container mb-2">
         {!create ? (
-          <button onClick={(e) => setCreate(true)}>Create new character</button>
+          <button
+            className="btn btn-primary  btn-sm"
+            onClick={(e) => setCreate(true)}
+          >
+            Create new character
+          </button>
         ) : (
           <div>
             <form
@@ -215,7 +221,10 @@ export function LandingController() {
           </div>
         )}
       </div>
-      <div> {characters ? <LandingView characters={characters} /> : <></>}</div>
+      <div className="container-fluid">
+        {" "}
+        {characters ? <LandingView characters={characters} /> : <></>}
+      </div>
     </div>
   );
 }

@@ -5,15 +5,30 @@ export function CharacterView({ character }) {
   const [newChar, setNewChar] = useState(character);
 
   return (
-    <div>
-      <button onClick={() => setEdit(true)}>Edit</button>
+    <div className="col-lg-4 mt-3">
+      <button
+        className="btn btn-secondary btn-sm"
+        onClick={() => setEdit(true)}
+      >
+        Edit
+      </button>
       {!edit ? (
-        <div>
-          <p>{character.name}</p>
-          <p>{character.description}</p>
-          {/* <p>{character.thumbnail}</p> */}
-          <img src={character.thumbnail} alt="thumbnail" />
-          <p>{character.modified}</p>
+        // <div className="container-fluid">
+        //   <h3 className="mt-3">{character.name}</h3>
+        //   <p className="text-justify">{character.description}</p>
+        //   {/* <p>{character.thumbnail}</p> */}
+        //   <img src={character.thumbnail} alt="thumbnail" />
+        //   <p>{character.modified}</p>
+        // </div>
+        <div className="card text-bg-ligth mt-3">
+          <div className="card-header">
+            <h3 className="mt-3">{character.name}</h3>
+          </div>
+          <div className="card-body">
+            <p className="text-justify">{character.description}</p>
+            <img src={character.thumbnail} alt="thumbnail" />
+            <p>{character.modified}</p>
+          </div>
         </div>
       ) : (
         <>
