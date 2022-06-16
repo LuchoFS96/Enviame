@@ -1,18 +1,17 @@
 import { useEffect } from "react";
 import { useState } from "react";
 import { LandingView } from "../Views/LandingView";
-import { NavController } from "./NavController";
 const axios = require("axios").default;
 
 export function LandingController() {
   const [characters, setCharacters] = useState([]);
   const [offset, setOffset] = useState(0);
+  const [search, setSearch] = useState("");
 
   const url = process.env.REACT_APP_URL;
   const ts = process.env.REACT_APP_TS;
   const hash = process.env.REACT_APP_HASH;
   const apikey = process.env.REACT_APP_PUBLIC_KEY;
-  console.log(characters);
 
   function handleScroll(event) {
     if (
@@ -29,9 +28,49 @@ export function LandingController() {
     window.addEventListener("scroll", handleScroll);
   }, [offset]);
 
-  function getCharacters(offset) {
+  function onInputChange(e) {
+    e.preventDefault();
+    setSearch(e.target.value);
+  }
+
+  function onSubmit(e) {
+    e.preventDefault();
+    // if (search === "") {
+    //   getCharacters(0, "", true);
+    // } else {
+    getCharacters(offset, search);
+    // }
+  }
+
+  function getCharacters(offset, name = "") {
     try {
+      if (name) {
+        axios
+          .get(
+            `${url}/v1/public/characters?ts=${ts}&apikey=${apikey}&hash=${hash}&name=${name}`
+          )
+          .then((character) => {
+            let aux = {
+              name: character.data.data.results[0].name,
+              description: character.data.data.results[0].description
+                ? character.data.data.results[0].description
+                : `${character.data.data.results[0].name} doesn't have an available description.`,
+              thumbnail: `${character.data.data.results[0].thumbnail.path}/portrait_xlarge.${character.data.data.results[0].thumbnail.extension}`,
+              modified: character.data.data.results[0].modified
+                .slice(0, 10)
+                .split("-")
+                .reverse()
+                .join("-"),
+            };
+            setCharacters([aux]);
+          });
+        return;
+      }
       if (!offset) {
+        // if (aux) {
+        //   setCharacters([]);
+        //   console.log("entre");
+        // }
         axios
           .get(
             `${url}/v1/public/characters?ts=${ts}&apikey=${apikey}&hash=${hash}`
@@ -53,6 +92,7 @@ export function LandingController() {
             });
 
             setCharacters([...characters, ...aux]);
+            // console.log(Array.from(new Set([...characters, ...aux])));
             // r.data.data.results
           });
       } else {
@@ -87,9 +127,37 @@ export function LandingController() {
   return (
     <div>
       <div>
-        <NavController />
+        <nav>
+          <ul>
+            <li>
+              <div>
+                <form onSubmit={onSubmit}>
+                  <input
+                    type="text"
+                    onChange={onInputChange}
+                    value={search}
+                    placeholder="Search Hero"
+                  />
+                  <input type="submit" value="Buscar" />
+                  <button
+                    onClick={() => {
+                      setOffset(0);
+                      setCharacters([]);
+                      setSearch("");
+                      getCharacters();
+                    }}
+                  >
+                    Clear
+                  </button>
+                </form>
+              </div>
+            </li>
+          </ul>
+        </nav>
       </div>
       <div> {characters ? <LandingView characters={characters} /> : <></>}</div>
     </div>
   );
 }
+
+// Fix input search '';
