@@ -7,6 +7,13 @@ export function LandingController() {
   const [characters, setCharacters] = useState([]);
   const [offset, setOffset] = useState(0);
   const [search, setSearch] = useState("");
+  const [create, setCreate] = useState(false);
+  const [newChar, setNewChar] = useState({
+    name: "",
+    description: "",
+    thumbnail: "",
+    modified: "",
+  });
 
   const url = process.env.REACT_APP_URL;
   const ts = process.env.REACT_APP_TS;
@@ -20,7 +27,13 @@ export function LandingController() {
     ) {
       console.log("please load more");
       setOffset(offset + 20);
+      wait();
     }
+  }
+
+  async function wait() {
+    console.log("awaitando");
+    await new Promise((r) => setTimeout(r, 1000));
   }
 
   useEffect(() => {
@@ -154,6 +167,53 @@ export function LandingController() {
             </li>
           </ul>
         </nav>
+      </div>
+      <div>
+        {!create ? (
+          <button onClick={(e) => setCreate(true)}>Create new character</button>
+        ) : (
+          <div>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                setNewChar(newChar);
+                setCreate(false);
+                setCharacters([newChar, ...characters]);
+                console.log(newChar);
+              }}
+            >
+              <input
+                type="text"
+                placeholder={newChar.name}
+                onChange={(e) =>
+                  setNewChar(newChar, (newChar.name = e.target.value))
+                }
+              />
+              <input
+                type="text"
+                placeholder={newChar.description}
+                onChange={(e) =>
+                  setNewChar(newChar, (newChar.description = e.target.value))
+                }
+              />
+              <input
+                type="url"
+                placeholder={newChar.thumbnail}
+                onChange={(e) =>
+                  setNewChar(newChar, (newChar.thumbnail = e.target.value))
+                }
+              />
+              <input
+                type="text"
+                placeholder={newChar.modified}
+                onChange={(e) =>
+                  setNewChar(newChar, (newChar.modified = e.target.value))
+                }
+              />
+              <input type="submit" value="Confirmar" />
+            </form>
+          </div>
+        )}
       </div>
       <div> {characters ? <LandingView characters={characters} /> : <></>}</div>
     </div>
